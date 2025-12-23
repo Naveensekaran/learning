@@ -20,6 +20,7 @@ public class Collections {
                 linkedList.add(2);
                 linkedList.add(3);
 
+//                System.out.println(linkedList.get(0));
 //                linkedList.forEach(System.out::println);
 
                 CopyOnWriteArrayList<String> vector = new CopyOnWriteArrayList<>();
@@ -32,8 +33,8 @@ public class Collections {
                 Queue<String> pq = new PriorityQueue<>();
 
 
-                pq.add("agu");
-                pq.add(null);
+//                pq.add("agu");
+//                pq.add(null);
 
 
 //                pq.remove();
@@ -41,7 +42,35 @@ public class Collections {
 
 //                pq.element();
 //                pq.peek();
-                pq.forEach(System.out::println);
+//                pq.forEach(System.out::println);
+
+                Set<String> hashSet = new HashSet<>();
+                hashSet.add("Naveen");
+                hashSet.add("agu");
+                hashSet.add(null);
+                hashSet.add(null);
+
+//                System.out.println(hashSet.size());
+
+//                hashSet.forEach(System.out::println);
+
+
+                Set<Integer> linkedHashSet = new TreeSet<>();
+                linkedHashSet.add(1);
+                linkedHashSet.add(3);
+                linkedHashSet.add(2);
+//                linkedHashSet.add(null);
+//                linkedHashSet.forEach(System.out::println);
+
+                Map<Integer, String> hashMap = new HashMap<>();
+                hashMap.put(1,"naveen");
+                hashMap.put(2,"kumar");
+
+                for(String ma : hashMap.values()){
+                        System.out.println(ma);
+                }
+
+                hashMap.forEach((integer, s) -> System.out.println());
 
         }
 }
