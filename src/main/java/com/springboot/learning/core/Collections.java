@@ -66,11 +66,13 @@ public class Collections {
                 hashMap.put(1,"naveen");
                 hashMap.put(2,"kumar");
 
-                for(String ma : hashMap.values()){
-                        System.out.println(ma);
-                }
+//                for(String ma : hashMap.values()){
+//                        System.out.println(ma);
+//                }
+//
+                hashMap.forEach((key,value)-> System.out.println("Key : "+ key +" Value : "+value));
 
-                hashMap.forEach((integer, s) -> System.out.println());
+//                hashMap.forEach((integer, s) -> System.out.println());
 
         }
 }
