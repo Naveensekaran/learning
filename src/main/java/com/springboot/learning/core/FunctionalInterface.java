@@ -17,7 +17,7 @@ class Cat implements Animal{
     }
 }
 
-public class FunctioinalInterface {
+public class FunctionalInterface {
     public static void main(String[] args){
       Animal animal = new Animal() {
           public void behavior() {
