@@ -1,8 +1,7 @@
 package com.springboot.learning.controller;
 
 import com.springboot.learning.service.UserService;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
