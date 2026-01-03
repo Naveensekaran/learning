@@ -1,3 +1,4 @@
+/*
 package com.springboot.learning.model;
 
 
@@ -19,3 +20,4 @@ public class Roles {
     private String name;
 
 }
+*/

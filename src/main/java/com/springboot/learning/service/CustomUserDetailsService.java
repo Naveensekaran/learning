@@ -1,3 +1,4 @@
+/*
 package com.springboot.learning.service;
 
 import com.springboot.learning.repostiory.UserRepository;
@@ -19,3 +20,4 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
+*/

@@ -5,21 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("/test")
 public class TestController {
 
-    @GetMapping("/public/hello")
-    public String publicApi() {
-        return "Public access";
+    @GetMapping("/hello")
+    public String helloApi() {
+        return "Hello";
     }
 
-    @GetMapping("/user/hello")
-    public String userApi() {
-        return "User access";
-    }
-
-    @GetMapping("/admin/hello")
-    public String adminApi() {
-        return "Admin access";
-    }
 }

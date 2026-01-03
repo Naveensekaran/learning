@@ -1,46 +1,69 @@
 package com.springboot.learning.controller;
 
-import com.springboot.learning.dto.LoginRequest;
+import com.springboot.learning.model.Users;
+import com.springboot.learning.repostiory.UserRepository;
 import com.springboot.learning.security.JwtService;
+import com.springboot.learning.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authManager;
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtService jwtService;
 
-    public AuthController(AuthenticationManager authManager,
-                          JwtService jwtService) {
-        this.authManager = authManager;
-        this.jwtService = jwtService;
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody Map<String, String> body){
+        String userName = body.get("username");
+        String password = body.get("password");
+
+        if(userRepository.findByUsername(userName).isPresent()){
+//            new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+        }
+        else{
+            userService.createUser(Users.builder().username(userName).password(passwordEncoder.encode(password)).build());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Successfully Created");
+        }
+
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> loginUser(@RequestBody Map<String,String> body){
+        String userName = body.get("username");
+        String password = body.get("password");
 
-        Authentication authentication =
-                authManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                request.getUsername(),
-                                request.getPassword()
-                        )
-                );
+        Optional<Users> userOptional = userRepository.findByUsername(userName);
 
-        return jwtService.generateToken(
-                (UserDetails) authentication.getPrincipal()
-        );
+        if(userOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not registered");
+        }
+        Users user = userOptional.get();
+
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid User");
+        }
+        String token = jwtService.generateToken(userName);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
     }
 }

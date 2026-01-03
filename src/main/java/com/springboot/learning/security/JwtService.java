@@ -1,37 +1,49 @@
 package com.springboot.learning.security;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtService {
 
-    private final String SECRET = "MY_SUPER_SECRET_KEY_123456";
+    private final String SECRET = "MY_SUPER_SECRET_KEY_1234569883249123840921384821340981230948";
+    
+    private final long EXPIRATION = 1000* 60;
 
-    public String generateToken(UserDetails user) {
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(Keys.hmacShaKeyFor(SECRET.getBytes()), SignatureAlgorithm.HS256)
-                .compact();
+    private final Key secretKey = Keys.hmacShaKeyFor(SECRET.getBytes());
+
+    public String generateToken(String username) {
+       return Jwts.builder()
+               .setSubject(username)
+               .setIssuedAt(new Date(System.currentTimeMillis()))
+               .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+               .signWith(secretKey, SignatureAlgorithm.HS256)
+               .compact();
     }
 
-    public String extractUsername(String token) {
+    public String extractToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET.getBytes())
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+
     }
 
-    public boolean validateToken(String token, UserDetails user) {
-        return extractUsername(token).equals(user.getUsername());
+    public boolean validateToken(String token) {
+       try{
+           extractToken(token);
+           return true;
+       }
+       catch (JwtException jwtException){
+           return false;
+       }
     }
 }
