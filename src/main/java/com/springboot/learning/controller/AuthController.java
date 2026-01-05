@@ -5,16 +5,13 @@ import com.springboot.learning.repostiory.UserRepository;
 import com.springboot.learning.security.JwtService;
 import com.springboot.learning.service.UserService;
 import com.springboot.learning.validation.Create;
-import com.springboot.learning.validation.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.Map;
 import java.util.Optional;
@@ -71,5 +68,10 @@ public class AuthController {
         }
         String token = jwtService.generateToken(userName);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRunTime(RuntimeException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
