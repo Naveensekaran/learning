@@ -4,9 +4,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
+@EnableCaching
 public class LearningApplication {
 
 	public static void main(String[] args) {
