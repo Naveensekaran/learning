@@ -70,6 +70,11 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
     }
 
+    @GetMapping("/users/{id}")
+    public Users getUser(@PathVariable long id) throws Exception {
+        return userService.getUserById(id);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRunTime(RuntimeException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());

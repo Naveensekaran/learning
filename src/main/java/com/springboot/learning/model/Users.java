@@ -31,6 +31,7 @@ public class Users {
 
     private boolean enabled;
 
+
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(
 //            name = "user_roles",
